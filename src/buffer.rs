@@ -25,7 +25,11 @@ impl<'a, T: 'a + Float> AudioBuffer<'a, T> {
         samples: usize,
     ) -> Self {
         Self {
-            inputs: slice::from_raw_parts(inputs_raw, input_count),
+            inputs: if !inputs_raw.is_null() {
+                slice::from_raw_parts(inputs_raw, input_count)
+            } else {
+                &[]
+            },
             outputs: slice::from_raw_parts_mut(outputs_raw, output_count),
             samples,
         }
